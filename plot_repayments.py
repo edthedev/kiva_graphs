@@ -5,28 +5,34 @@ import collections
 
 import matplotlib.pyplot as plt
 
-files = os.listdir('.')
+# files = os.listdir('.')
 
-for filename in files:
-    if not '.json' in filename:
-        continue
-    f = open(filename, 'r')
-    raw_data = f.read()
-    f.close()
+# for filename in files:
 
-    dataset = simplejson.loads(raw_data)
+#    if not '.json' in filename:
+#        continue
 
+filename = 'edandjoani.json'
+
+f = open(filename, 'r')
+raw_data = f.read()
+f.close()
+
+dataset = simplejson.loads(raw_data)
+loans = dataset['loans']
+for loan in loans:
 # Assume one loan
     loan = dataset['loans'][0]
 # Assume one borrower
+    import pdb; pdb.set_trace()
     name = loan['borrowers'][0]['first_name']
 # Loan amount
     total_loaned = loan['terms']['disbursal_amount']
 
 # Gather up distributions
-    #paid_out = {}
-    #for payment in loan['terms']['local_payments']:
-    #    paid_out[ payment['due_date'] ] = payment['amount']
+#paid_out = {}
+#for payment in loan['terms']['local_payments']:
+#    paid_out[ payment['due_date'] ] = payment['amount']
 
 # Gather up payments
     paid = {}
@@ -41,8 +47,8 @@ for filename in files:
        repaid[day] = total_paid
 
 # Graph distributions 
-    #plt.bar(range(len(paid_out)),
-    #        paid_out.values(), align='center')
+#plt.bar(range(len(paid_out)),
+#        paid_out.values(), align='center')
 
 # Graph payments
     plt.bar(range(len(repaid)),
@@ -51,9 +57,10 @@ for filename in files:
 # Label graph
     plt.xticks(range(len(repaid)), repaid.keys())
     plt.ylabel('Dollars rerepaid')
-    # plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
+# plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
     plt.axis([0, len(repaid), 0, total_loaned])
     plt.xlabel(name)
-    plt.show()
+    # plt.show()
+    plt.savefig(name + '.jpg')
 
-    # import pdb; pdb.set_trace()
+# import pdb; pdb.set_trace()
