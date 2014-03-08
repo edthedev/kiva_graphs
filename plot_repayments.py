@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import simplejson
+import collections
 
 import matplotlib.pyplot as plt
 
@@ -23,31 +24,35 @@ for filename in files:
     total_loaned = loan['terms']['disbursal_amount']
 
 # Gather up distributions
-    paid_out = {}
-    for payment in loan['terms']['local_payments']:
-        paid_out[ payment['due_date'] ] = payment['amount']
+    #paid_out = {}
+    #for payment in loan['terms']['local_payments']:
+    #    paid_out[ payment['due_date'] ] = payment['amount']
 
 # Gather up payments
     paid = {}
-    total_paid = 0
     for payment in loan['payments']:
-        total_paid += payment['amount']
-        paid[ payment['processed_date'] ] = total_paid
+        paid[ payment['processed_date'] ] = payment['amount']
+
+# Get ready to chart total repaid over time
+    repaid = {}
+    total_paid = 0
+    for day in sorted(paid.iterkeys(), reverse=True):
+       total_paid += paid[day]
+       repaid[day] = total_paid
 
 # Graph distributions 
     #plt.bar(range(len(paid_out)),
     #        paid_out.values(), align='center')
-    
 
 # Graph payments
-    plt.bar(range(len(paid)),
-            paid.values(), align='center')
+    plt.bar(range(len(repaid)),
+            repaid.values(), align='center')
 
 # Label graph
-    plt.xticks(range(len(paid)), paid.keys())
-    plt.ylabel('Dollars repaid')
+    plt.xticks(range(len(repaid)), repaid.keys())
+    plt.ylabel('Dollars rerepaid')
     # plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
-    plt.axis([0, len(paid), 0, total_loaned])
+    plt.axis([0, len(repaid), 0, total_loaned])
     plt.xlabel(name)
     plt.show()
 
