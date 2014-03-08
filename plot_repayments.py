@@ -17,20 +17,38 @@ for filename in files:
 
 # Assume one loan
     loan = dataset['loans'][0]
+# Assume one borrower
+    name = loan['borrowers'][0]['first_name']
+# Loan amount
+    total_loaned = loan['terms']['disbursal_amount']
 
+# Gather up distributions
+    paid_out = {}
+    for payment in loan['terms']['local_payments']:
+        paid_out[ payment['due_date'] ] = payment['amount']
+
+# Gather up payments
     paid = {}
+    total_paid = 0
     for payment in loan['payments']:
-        paid[ payment['processed_date'] ] = payment['amount']
+        total_paid += payment['amount']
+        paid[ payment['processed_date'] ] = total_paid
 
-    print paid
-    import pdb; pdb.set_trace()
+# Graph distributions 
+    #plt.bar(range(len(paid_out)),
+    #        paid_out.values(), align='center')
+    
 
-    # plt.plot([1,2,3,5])
+# Graph payments
     plt.bar(range(len(paid)),
             paid.values(), align='center')
-    plt.xticks(range(len(paid)), paid.keys())
 
+# Label graph
+    plt.xticks(range(len(paid)), paid.keys())
     plt.ylabel('Dollars repaid')
-    plt.xlabel('Name of Lendee')
+    # plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
+    plt.axis([0, len(paid), 0, total_loaned])
+    plt.xlabel(name)
     plt.show()
 
+    # import pdb; pdb.set_trace()
