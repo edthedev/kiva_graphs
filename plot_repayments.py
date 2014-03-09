@@ -5,26 +5,32 @@ import collections
 import subprocess
 import matplotlib.pyplot as plt
 
-
 USERNAME = 'edandjoani'
+IMAGE_ROOT = 'images'
 
 DOWNLOAD_LOAN_DATA = True
-BUILD_GRAPHS = True
+BUILD_GRAPHS = False
 
 if DOWNLOAD_LOAN_DATA:
 
+    files = os.listdir('.')
+    for filename in files:
+        if not USERNAME in filename:
+            continue
+
 # Create this file by calling curl_list_loans.sh USERNAME
-    f = open(USERNAME + '.json', 'r')
-    raw_data = f.read()
-    f.close()
+        f = open(USERNAME + '.json', 'r')
+        raw_data = f.read()
+        f.close()
 
 # Call other curl to download loan data for all loans.
-    print "Downloading all loan data..."
-    dataset = simplejson.loads(raw_data)
-    loans = dataset['loans']
-    for loan_id in loans:
-        subprocess.call('./curl_kiva.sh %d' % loan_id, shell=True)
-        print "Downloaded %d." % loan_id
+        print "Downloading all loan data..."
+        dataset = simplejson.loads(raw_data)
+        loans = dataset['loans']
+        for loan_id in loans:
+            subprocess.call('./curl_kiva.sh %d' % loan_id, shell=True)
+            print "Downloaded %d." % loan_id
+        # TODO: Ask for the next page, when we reach the end.
 
 if BUILD_GRAPHS:
 # Make graphs for all loans.
@@ -33,6 +39,8 @@ if BUILD_GRAPHS:
     for filename in files:
 
         if not '.json' in filename:
+            continue
+        if filename == '.json':
             continue
         if filename == USERNAME + '.json':
             continue
@@ -83,7 +91,7 @@ if BUILD_GRAPHS:
         plt.axis([0, len(repaid), 0, total_loaned])
         plt.xlabel(name)
         # plt.show()
-        plt.savefig(name + '.jpg')
+        plt.savefig(IMAGE_ROOT + '/' + name + '.jpg')
         print "Create graph %s.jpg" % name
 
 # import pdb; pdb.set_trace()
