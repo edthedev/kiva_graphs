@@ -26,7 +26,12 @@ if DOWNLOAD_LOAN_DATA:
 # Call other curl to download loan data for all loans.
         print "Downloading all loan data..."
         dataset = simplejson.loads(raw_data)
-        loans = dataset['loans']
+        loans = []
+        if 'loans' in dataset.keys():
+            loans = dataset['loans']
+        else:
+            print "Unable to process " + filename
+
         for loan_id in loans:
             subprocess.call('./curl_kiva.sh %d' % loan_id, shell=True)
             print "Downloaded %d." % loan_id
@@ -51,8 +56,11 @@ if BUILD_GRAPHS:
         f.close()
 
         dataset = simplejson.loads(raw_data)
-        import pdb; pdb.set_trace()
 # Assume one loan
+        if not 'loans' in dataset:
+            print "Unable to process " + filename
+            continue
+
         loan = dataset['loans'][0]
 # Assume one borrower
         name = loan['borrowers'][0]['first_name']
