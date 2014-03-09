@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 USERNAME = 'edandjoani'
 IMAGE_ROOT = 'images'
 
-DOWNLOAD_LOAN_DATA = True
-BUILD_GRAPHS = False
+DOWNLOAD_LOAN_DATA = False
+BUILD_GRAPHS = True
 
 if DOWNLOAD_LOAN_DATA:
 
@@ -19,7 +19,7 @@ if DOWNLOAD_LOAN_DATA:
             continue
 
 # Create this file by calling curl_list_loans.sh USERNAME
-        f = open(USERNAME + '.json', 'r')
+        f = open(filename, 'r')
         raw_data = f.read()
         f.close()
 
@@ -42,7 +42,7 @@ if BUILD_GRAPHS:
             continue
         if filename == '.json':
             continue
-        if filename == USERNAME + '.json':
+        if USERNAME in filename:
             continue
 
 # Create this file by calling curl_list_loans.sh USERNAME
