@@ -34,10 +34,10 @@ IMAGE_ROOT = 'images'
 BUILD_GRAPHS = False
 
 # "2012-12-31T08:00:00Z",
-DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+JSON_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+DISPLAY_DATE_FORMAT = "%Y-%m-%d"
 
 from docopt import docopt
-
 
 def download_loan_data(user_filename):
 
@@ -103,8 +103,8 @@ def plot(filename):
 # Gather up payments
     paid = {}
     for payment in loan['payments']:
-        paydate = datetime.datetime.strptime(payment['processed_date'], DATE_FORMAT)
-        paydate = paydate.strftime('%Y-%M-%d')
+        paydate = datetime.datetime.strptime(payment['processed_date'], JSON_DATE_FORMAT)
+        paydate = paydate.strftime(DISPLAY_DATE_FORMAT)
         if paydate not in paid:
             paid[ paydate ] = 0
         paid[ paydate ] += payment['amount']
