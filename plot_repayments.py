@@ -145,7 +145,7 @@ if __name__ == '__main__':
         build_graphs(DATA_DIR, IMAGE_ROOT)
 
     if args['plot']:
-        plot(args['--data'] + '/' + args['DATAFILE'])
+        plot(args['DATAFILE'])
 
     if args['download']:
         files = os.listdir(DATA_DIR)
