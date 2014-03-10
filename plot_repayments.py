@@ -24,6 +24,7 @@ import os
 import simplejson
 import collections
 import subprocess
+import time
 import matplotlib.pyplot as plt
 
 import docopt
@@ -52,7 +53,7 @@ def download_loan_data(user_filename):
 
         for loan_id in loans:
 # Be polite to the remote server...
-            sleep(1)
+            time.sleep(1)
 
             subprocess.call('./curl_kiva.sh %d' % loan_id, shell=True)
             print "Downloaded %d." % loan_id
@@ -160,5 +161,7 @@ if __name__ == '__main__':
         for filename in files:
             if not USERNAME in filename:
                 continue
+            filename = os.path.join(DATA_DIR, filename)
             download_loan_data(filename)
+            time.sleep(4)
 
