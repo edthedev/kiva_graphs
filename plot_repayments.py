@@ -35,7 +35,7 @@ BUILD_GRAPHS = False
 
 # "2012-12-31T08:00:00Z",
 JSON_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-DISPLAY_DATE_FORMAT = "%Y-%m-%d"
+DISPLAY_DATE_FORMAT = "%m.%d"
 
 from docopt import docopt
 
@@ -109,29 +109,58 @@ def plot(filename):
             paid[ paydate ] = 0
         paid[ paydate ] += payment['amount']
 
+#    graph = { 'loaned': {},
+#                'paid': {},
+#    }
+
 # Get ready to chart total repaid over time
-    repaid = {'': 0}
+    repaid_raw = {}
     total_paid = 0
     for day in sorted(paid.iterkeys(), reverse=True):
        total_paid += paid[day]
-       repaid[day] = total_paid
+       # print total_paid
+       repaid_raw[day] = total_paid
+
+    repaid_keys = sorted(repaid_raw, key=lambda key: repaid_raw[key])
+    repaid_values = repaid_raw.values()
 
 # Graph distributions 
 #plt.bar(range(len(paid_out)),
 #        paid_out.values(), align='center')
+    graph = {}
+    graph['paid'] = repaid_raw
 
-# Graph payments
+# Graph all nice like...
+    # for title, data_dict in graph.iteritems():
+    #    x = data_dict.keys()
+    #    y = data_dict.values()
     plt.figure()
-    plt.bar(range(len(repaid)),
-            repaid.values(), align='center')
-
-# Label graph
-    plt.xticks(range(len(repaid)), repaid.keys())
+        # print x
+    plt.plot(repaid_keys, repaid_values)
+    # plt.title(title)
+    plt.xticks(range(len(repaid_keys)), repaid_keys)
     plt.ylabel('Dollars repaid.')
-# plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
-    plt.axis([0, len(repaid), 0, total_loaned])
-    plt.xlabel(name)
-    # plt.show()
+## plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
+
+## Graph payments
+#    plt.figure(1)
+#    plt.subplot(211)
+#    # plt.bar(range(len(repaid_keys)),
+#            repaid_values, align='center')
+#
+## Label graph
+#    plt.xticks(range(len(repaid_keys)), repaid_keys)
+#    plt.axis([0, len(repaid_keys), 0, total_loaned])
+#    plt.xlabel(name)
+#    # plt.show()
+#
+#    plt.subplot(211)
+#    plt.bar(range(len(repaid_keys)),
+#            repaid_values, align='center')
+#    plt.ylabel('Dollars loaned.')
+#    plt.xlabel(name)
+
+    plt.show()
     plt.savefig(IMAGE_ROOT + '/' + name + '.jpg')
     plt.close()
     print "Created graph %s.jpg from %s" % (name, filename)
