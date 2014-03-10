@@ -77,7 +77,15 @@ def plot(filename):
         return False
 
     loan = dataset['loans'][0]
+    if not hasattr(loan, 'keys'):
+        print "%s is not a Kiva loan file." % filename
+        return False
+
 # Assume one borrower
+    if not 'borrowers' in loan:
+        print "%s is not a Kiva loan file." % filename
+        return False
+
     name = loan['borrowers'][0]['first_name']
 # Loan amount
     total_loaned = loan['terms']['disbursal_amount']
@@ -115,7 +123,7 @@ def plot(filename):
     plt.xlabel(name)
     # plt.show()
     plt.savefig(IMAGE_ROOT + '/' + name + '.jpg')
-    print "Create graph %s.jpg" % name
+    print "Created graph %s.jpg from %s" % (name, filename)
 
 def build_graphs(DATA_DIR, IMAGE_ROOT):
     ''' Convert all load data found in the data dir into graph files.'''
@@ -129,10 +137,10 @@ def build_graphs(DATA_DIR, IMAGE_ROOT):
             continue
         if filename == '.json':
             continue
-        if USERNAME in filename:
-            continue
+        # if USERNAME in filename:
+        #    continue
 
-        plot(filename)
+        plot(os.path.join(DATA_DIR, filename))
 
 if __name__ == '__main__':
     args = docopt(__doc__, version='Kiva Loan Plots 0.2')
