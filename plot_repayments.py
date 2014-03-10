@@ -113,6 +113,7 @@ def plot(filename):
 #        paid_out.values(), align='center')
 
 # Graph payments
+    plt.figure()
     plt.bar(range(len(repaid)),
             repaid.values(), align='center')
 
@@ -124,6 +125,7 @@ def plot(filename):
     plt.xlabel(name)
     # plt.show()
     plt.savefig(IMAGE_ROOT + '/' + name + '.jpg')
+    plt.close()
     print "Created graph %s.jpg from %s" % (name, filename)
 
 def build_graphs(DATA_DIR, IMAGE_ROOT):
