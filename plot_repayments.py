@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 
 USERNAME = 'edandjoani'
 IMAGE_ROOT = 'images'
+DATA_DIR = './data'
 
 DOWNLOAD_LOAN_DATA = False
 BUILD_GRAPHS = True
 
 if DOWNLOAD_LOAN_DATA:
 
-    files = os.listdir('.')
+    files = os.listdir(DATA_DIR)
     for filename in files:
         if not USERNAME in filename:
             continue
@@ -40,7 +41,7 @@ if DOWNLOAD_LOAN_DATA:
 if BUILD_GRAPHS:
 # Make graphs for all loans.
     print "Creating graphs for all loans."
-    files = os.listdir('.')
+    files = os.listdir(DATA_DIR)
     for filename in files:
 
         if not '.json' in filename:
