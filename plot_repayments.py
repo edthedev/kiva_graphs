@@ -21,6 +21,7 @@ SCRATCH = """
 
 """
 import os
+import datetime
 import simplejson
 import collections
 import subprocess
@@ -31,6 +32,9 @@ import docopt
 
 IMAGE_ROOT = 'images'
 BUILD_GRAPHS = False
+
+# "2012-12-31T08:00:00Z",
+DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 from docopt import docopt
 
@@ -99,7 +103,11 @@ def plot(filename):
 # Gather up payments
     paid = {}
     for payment in loan['payments']:
-        paid[ payment['processed_date'] ] = payment['amount']
+        paydate = datetime.datetime.strptime(payment['processed_date'], DATE_FORMAT)
+        paydate = paydate.strftime('%Y-%M-%d')
+        if paydate not in paid:
+            paid[ paydate ] = 0
+        paid[ paydate ] += payment['amount']
 
 # Get ready to chart total repaid over time
     repaid = {'': 0}
@@ -119,7 +127,7 @@ def plot(filename):
 
 # Label graph
     plt.xticks(range(len(repaid)), repaid.keys())
-    plt.ylabel('Dollars rerepaid')
+    plt.ylabel('Dollars repaid.')
 # plt.yticks(range(0, total_loaned), range(0, total_loaned, 100))
     plt.axis([0, len(repaid), 0, total_loaned])
     plt.xlabel(name)
@@ -166,4 +174,3 @@ if __name__ == '__main__':
             filename = os.path.join(DATA_DIR, filename)
             download_loan_data(filename)
             time.sleep(4)
-
