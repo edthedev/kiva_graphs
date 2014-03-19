@@ -18,7 +18,24 @@
 
 Maybe it just needs an anchor.
 <div id="images"></div>
+
+Output list...
+<div id='header'>
+<ul id='output'>
+</ul>
+</div>
+
 <script>
+
+	function writeToScreen( data ) {
+		$.each( data.items, function( i, item ) {
+			$( "#header ul" ).append('<li>' + item.media.m + '</li>' );
+			if ( i === 3 ) {
+				return false;
+}
+});
+};
+
 	(function() {
 		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		$.getJSON( flickerAPI, {
@@ -26,14 +43,7 @@ Maybe it just needs an anchor.
 			tagmode: "any",
 			format: "json"
 	})
-	.done(function( data ) {
-		$.each( data.items, function( i, item ) {
-			$( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
-			if ( i === 3 ) {
-				return false;
-}
-});
-});
+	.done( writeToScreen )
 	})();
 	</script>
 </body>
