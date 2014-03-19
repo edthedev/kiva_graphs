@@ -10,11 +10,21 @@
 			}
 		</style>
 		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+
+
 </head>
 <body>
 
 <h1> Kiva stuff.</h1>
 
+<pre>
+DONE: Do not fetch Kiva data on every page reload.
+
+</pre>
+<button onClick='fetchAPIData();'>
+	Fetch API Data
+	</button>
 
 Maybe it just needs an anchor.
 <div id="images"></div>
@@ -32,6 +42,8 @@ Output paragraph...
 
 <script>
 
+console.log("console test");
+
 	function writeToScreen( data, status ) {
 		$( "#header p" ).append('Success: ' + status);
 		$( "#header p" ).append('Data: ' + data);
@@ -45,12 +57,22 @@ Output paragraph...
 });
 };
 
-	(function() {
+	function fetchAPIData() {
+		// alert("called fetchAPIData");
 		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
 
-		$.getJSON( kivaAPI ).done( writeToScreen ) 
-	})();
-	</script>
+		$.getJSON( kivaAPI ).done( writeToScreen );
+	};
+
+
+	$( document ).ready( function() {
+		console.log("ready");
+		// alert('Huzzah!');
+		$(" button ").onClick = fetchAPIData;
+	});
+
+</script>
+
 </body>
 </html>
