@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Testing a change.</title>
+		<title>Kiva stuff.</title>
 		<style>
 			img {
 				height: 100px;
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h1> This sucks. </h1>
+<h1> Kiva stuff.</h1>
 
 
 Maybe it just needs an anchor.
@@ -23,13 +23,22 @@ Output list...
 <div id='header'>
 <ul id='output'>
 </ul>
+
+<p id='printout'>
+Output paragraph...
+</p>
 </div>
+
 
 <script>
 
-	function writeToScreen( data ) {
+	function writeToScreen( data, status ) {
+		$( "#header p" ).append('Success: ' + status);
+		$( "#header p" ).append('Data: ' + data);
+
 		$.each( data.items, function( i, item ) {
-			$( "#header ul" ).append('<li>' + item.media.m + '</li>' );
+			alert(item);
+			$( "#header ul" ).append('<li>' + item + '</li>' );
 			if ( i === 3 ) {
 				return false;
 }
@@ -38,12 +47,9 @@ Output list...
 
 	(function() {
 		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-		$.getJSON( flickerAPI, {
-			tags: "mount rainier",
-			tagmode: "any",
-			format: "json"
-	})
-	.done( writeToScreen )
+		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
+
+		$.getJSON( kivaAPI ).done( writeToScreen ) 
 	})();
 	</script>
 </body>
