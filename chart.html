@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Kiva stuff.</title>
+<style type="text/css">
+img {
+height: 100px;
+float: left;
+}
+
+svg {
+  font-family: "Helvetica Neue", Helvetica;
+}
+
+.line {
+fill: none;
+stroke: #000;
+stroke-width: 2px;
+}
+
+div.bar {
+display: inline-block;
+width: 20px;
+height: 75px;	/* Gets overriden by D3-assigned height below */
+margin-right: 2px;
+background-color: teal;
+}
+
+</style>
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+		<script src="Chart.js/Chart.js"></script>
+</head>
+<body>
+
+<h1> Kiva stuff.</h1>
+
+<pre>
+Reminder: Ctrl+Option+K to open the Javascript console on Mac Firefox.
+DONE: Do not fetch Kiva data on every page reload.
+
+</pre>
+<button onClick='fetchAPIData();'>
+	Fetch API Data
+	</button>
+
+Maybe it just needs an anchor.
+<div id="images"></div>
+
+Output list...
+<div id='header'>
+<ul id='output'>
+</ul>
+
+<p id='printout'>
+Output paragraph...
+</p>
+</div>
+
+
+<script>
+
+console.log("console test");
+
+	function writeToScreen( data, status ) {
+		$( "#header p" ).append('Success: ' + status);
+		$( "#header p" ).append('Data: ' + data);
+		console.log(JSON.stringify(data));
+
+		$.each( data.items, function( i, item ) {
+			alert(item);
+			$( "#header ul" ).append('<li>' + item + '</li>' );
+			if ( i === 3 ) {
+				return false;
+}
+});
+};
+
+	function fetchAPIData() {
+		// alert("called fetchAPIData");
+		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
+
+		$.getJSON( kivaAPI ).done( writeToScreen );
+	};
+
+
+
+	function makeChart() {
+
+		console.log("HULK MAKE CHART!!");
+			
+		var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+		11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+		d3.select("body").selectAll("div")
+		.data(dataset)
+		.enter()
+		.append("div")
+		.attr("class", "bar")
+		.style("height", function(d) {
+		var barHeight = d * 5;
+		return barHeight + "px";
+		});
+
+
+		console.log("HULK finish puny chart.");
+	
+	}
+
+
+	$( document ).ready( function() {
+		console.log("ready");
+		// alert('Huzzah!');
+		$(" button ").onClick = fetchAPIData;
+		makeChart();
+	});
+
+
+</script>
+
+
+Now for the Chart.js stuff..
+
+<canvas id="myChart" width="400" height="400"></canvas>
+<script>
+
+	//Get the context of the canvas element we want to select
+	var ctx = document.getElementById("myChart").getContext("2d");
+	var myNewChart = new Chart(ctx).PolarArea(data);
+
+	//Get context with jQuery - using jQuery's .get() method.
+	var ctx = $("#myChart").get(0).getContext("2d");
+	//This will get the first returned node in the jQuery collection.
+	var myNewChart = new Chart(ctx);
+
+var data = {
+	labels : ["January","February","March","April","May","June","July"],
+	datasets : [
+		{
+			fillColor : "rgba(220,220,220,0.5)",
+			strokeColor : "rgba(220,220,220,1)",
+			pointColor : "rgba(220,220,220,1)",
+			pointStrokeColor : "#fff",
+			data : [65,59,90,81,56,55,40]
+		},
+		{
+			fillColor : "rgba(151,187,205,0.5)",
+			strokeColor : "rgba(151,187,205,1)",
+			pointColor : "rgba(151,187,205,1)",
+			pointStrokeColor : "#fff",
+			data : [28,48,40,19,96,27,100]
+		}
+	]
+}
+	
+	new Chart(ctx).Line(data,options);
+
+// See http://www.chartjs.org/docs/
+
+	</script>
+
+
+<p>This is the original end of the page.</p>
+</body>
+</html>
