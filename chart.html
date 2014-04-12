@@ -87,7 +87,7 @@ console.log("console test");
 
 
 
-	function makeChart() {
+	function makeChart2() {
 
 		console.log("HULK MAKE CHART!!");
 			
@@ -110,12 +110,6 @@ console.log("console test");
 	}
 
 
-	$( document ).ready( function() {
-		console.log("ready");
-		// alert('Huzzah!');
-		$(" button ").onClick = fetchAPIData;
-		makeChart();
-	});
 
 
 </script>
@@ -126,9 +120,12 @@ Now for the Chart.js stuff..
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
 
+	function makeChart() {
+
+	console.log("HULK MAKE CHART!!");
 	//Get the context of the canvas element we want to select
 	var ctx = document.getElementById("myChart").getContext("2d");
-	var myNewChart = new Chart(ctx).PolarArea(data);
+	// var myNewChart = new Chart(ctx).PolarArea(data);
 
 	//Get context with jQuery - using jQuery's .get() method.
 	var ctx = $("#myChart").get(0).getContext("2d");
@@ -155,10 +152,19 @@ var data = {
 	]
 }
 	
-	new Chart(ctx).Line(data,options);
+	// new Chart(ctx).Line(data,options);
+	new Chart(ctx).Line(data);
+}
 
 // See http://www.chartjs.org/docs/
 
+	$( document ).ready( function() {
+		console.log("ready");
+		// alert('Huzzah!');
+		$(" button ").onClick = fetchAPIData;
+		makeChart();
+
+	});
 	</script>
 
 
