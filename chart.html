@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<title>Kiva stuff.</title>
+<meta charset="utf-8">
+<title>Kiva stuff.</title>
 <style type="text/css">
 img {
 height: 100px;
@@ -28,9 +28,8 @@ background-color: teal;
 }
 
 </style>
-		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-
-		<script src="Chart.js/Chart.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="Chart.js/Chart.js"></script>
 </head>
 <body>
 
@@ -73,17 +72,18 @@ console.log("console test");
 			$( "#header ul" ).append('<li>' + item + '</li>' );
 			if ( i === 3 ) {
 				return false;
-}
-});
-};
+		}
+		});
+		};
 
 	function fetchAPIData() {
 		// alert("called fetchAPIData");
 		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
 
-		$.getJSON( kivaAPI ).done( writeToScreen );
+		$.getJSON( kivaAPI ).done( updateChart );
 	};
+
 
 
 
@@ -120,7 +120,8 @@ Now for the Chart.js stuff..
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
 
-	function makeChart() {
+function updateChart( data, status) {
+	console.log(JSON.stringify(data));
 
 	console.log("HULK MAKE CHART!!");
 	//Get the context of the canvas element we want to select
