@@ -37,6 +37,7 @@ background-color: teal;
 
 <pre>
 Reminder: Ctrl+Option+K to open the Javascript console on Mac Firefox.
+Reminder: Command+Option+J to open the Javascript console on Mac Chrome.
 DONE: Do not fetch Kiva data on every page reload.
 
 </pre>
@@ -76,14 +77,6 @@ console.log("console test");
 		});
 		};
 
-	function fetchAPIData() {
-		// alert("called fetchAPIData");
-		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
-
-		$.getJSON( kivaAPI ).done( updateChart );
-	};
-
 
 
 
@@ -118,10 +111,61 @@ console.log("console test");
 Now for the Chart.js stuff..
 
 <canvas id="myChart" width="400" height="400"></canvas>
+<label id="chartLabel" for="myChart"></label>
 <script>
 
+function getLoanDates(data) {
+
+	payments = data['loans'][0]['terms']['local_payments']
+	// console.log(JSON.stringify(payments));
+	data = $.map(payments, function(e){
+			return e['due_date'];}
+			);
+	return data
+			
+}
+
+
+function getLoanSchedule(data) {
+
+	payments = data['loans'][0]['terms']['local_payments']
+	// console.log(JSON.stringify(payments));
+	data = $.map(payments, function(e){
+			return e['local_amount'];}
+			);
+	return data
+}
+
+function getLoanDescription(data)
+{
+	name = data['loans'][0]['name']
+	sector = data['loans'][0]['sector']
+	activity = data['loans'][0]['activity']
+
+	return name + " - " + sector + ":" + activity
+}
+
+function getLoanRepayments(data) {
+
+	payments = data['loans'][0]['payments']
+	console.log(JSON.stringify(payments));
+	data = $.map(payments, function(e){
+			return e['amount'];}
+			);
+	return data
+}
+
 function updateChart( data, status) {
-	console.log(JSON.stringify(data));
+
+	due_amounts = getLoanSchedule(data);
+	paid_amounts = getLoanRepayments(data);
+	due_dates = getLoanDates(data);
+	desc = getLoanDescription(data);
+	console.log(desc);
+
+	//
+   	console.log(JSON.stringify(data));
+	$("#chartLabel").text(desc);
 
 	console.log("HULK MAKE CHART!!");
 	//Get the context of the canvas element we want to select
@@ -134,21 +178,21 @@ function updateChart( data, status) {
 	var myNewChart = new Chart(ctx);
 
 var data = {
-	labels : ["January","February","March","April","May","June","July"],
+	labels : due_dates,
 	datasets : [
 		{
 			fillColor : "rgba(220,220,220,0.5)",
 			strokeColor : "rgba(220,220,220,1)",
 			pointColor : "rgba(220,220,220,1)",
 			pointStrokeColor : "#fff",
-			data : [65,59,90,81,56,55,40]
+			data : due_amounts 
 		},
 		{
 			fillColor : "rgba(151,187,205,0.5)",
 			strokeColor : "rgba(151,187,205,1)",
 			pointColor : "rgba(151,187,205,1)",
 			pointStrokeColor : "#fff",
-			data : [28,48,40,19,96,27,100]
+			data : paid_amounts
 		}
 	]
 }
@@ -157,13 +201,21 @@ var data = {
 	new Chart(ctx).Line(data);
 }
 
+	function fetchAPIData() {
+		// alert("called fetchAPIData");
+		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
+
+		$.getJSON( kivaAPI ).done( updateChart );
+	};
+
 // See http://www.chartjs.org/docs/
 
 	$( document ).ready( function() {
 		console.log("ready");
 		// alert('Huzzah!');
 		$(" button ").onClick = fetchAPIData;
-		makeChart();
+		// makeChart();
 
 	});
 	</script>
