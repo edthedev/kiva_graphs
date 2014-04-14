@@ -44,20 +44,7 @@ DONE: Do not fetch Kiva data on every page reload.
 <button onClick='fetchAPIData();'>
 	Fetch API Data
 	</button>
-
-Maybe it just needs an anchor.
-<div id="images"></div>
-
-Output list...
 <div id='header'>
-<ul id='output'>
-</ul>
-
-<p id='printout'>
-Output paragraph...
-</p>
-</div>
-
 
 <script>
 
@@ -107,9 +94,7 @@ console.log("console test");
 
 </script>
 
-
-Now for the Chart.js stuff..
-
+<h3>Charts</h3>
 <canvas id="myChart" width="400" height="400"></canvas>
 <label id="chartLabel" for="myChart"></label>
 <script>
@@ -124,7 +109,6 @@ function getLoanDates(data) {
 	return data
 			
 }
-
 
 function getLoanSchedule(data) {
 
@@ -221,6 +205,5 @@ var data = {
 	</script>
 
 
-<p>This is the original end of the page.</p>
 </body>
 </html>
