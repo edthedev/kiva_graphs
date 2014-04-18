@@ -6,7 +6,7 @@
 <style type="text/css">
 
 li { background: lightblue; }
-li:nth-child(odd) { background: gray; }	
+li:nth-child(odd) { background: lightgray; }	
 
 img {
 height: 100px;
@@ -107,11 +107,8 @@ console.log("console test");
 
 <h3>Loans</h3>
 <ul id="loans">
-	<li> There doesn't seem to be anything here.</li>
+	<li> Press the button above to fetch some loan data. </li>
 	</ul>
-<h3>Charts</h3>
-<canvas id="myChart" width="400" height="400"></canvas>
-<label id="chartLabel" for="myChart"></label>
 <script>
 
 function getLoanDates(data) {
@@ -165,7 +162,7 @@ function list_loans( data, status) {
 		id = item['id'];
 
 		var item_html = [
-		'<li><div boder=1><canvas id=canvas' + id + ' width=400 height=100></canvas></div>',
+		'<li><canvas id=canvas' + id + ' width=400 height=200></canvas>',
 		'<button onClick="fetchAPIData(' + id + ');">',
 			'		Fetch Data for ' + id,
 			'</button></li>'
