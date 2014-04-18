@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+Ctrl+Shift+K to open the Javascript Console.
+
+Encoder for testing our answers:
+http://www5.rptea.com/base64/
+(We can test TDI with this encoder...)
+
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<script>
+
+function toUTF16(codePoint) {
+    var TEN_BITS = parseInt('1111111111', 2);
+    function u(codeUnit) {
+        return '\\u'+codeUnit.toString(16).toUpperCase();
+    }
+
+    if (codePoint <= 0xFFFF) {
+        return u(codePoint);
+    }
+    codePoint -= 0x10000;
+
+    // Shift right to get to most significant 10 bits
+    var leadingSurrogate = 0xD800 | (codePoint >> 10);
+
+    // Mask to get least significant 10 bits
+    var trailingSurrogate = 0xDC00 | (codePoint & TEN_BITS);
+
+    return u(leadingSurrogate) + u(trailingSurrogate);
+}
+
+function utf8_to_b64( str ) {
+  return window.btoa(unescape(encodeURIComponent( str )));
+}
+
+function main()
+{
+var password = "car";
+// var password = "flib";
+var quotedPassword = "\"" + password + "\"";
+var unicodePwd = quotedPassword;
+// char unicodePwd[] = quotedPassword.toCharArray();
+var pwdArray = new Array();
+// = new byte[unicodePwd.length * 2];
+
+var cheapo = btoa(quotedPassword);
+console.log(cheapo);
+
+// var encodish = utf8_to_b64(quotedPassword);
+// var encodish = toUTF16(quotedPassword);
+
+// TODO: Convert me to use map.
+for (var i=0; i<quotedPassword.length; i++) {
+
+	console.log("Before Encoded " + quotedPassword[i]);
+	var encodish = toUTF16(quotedPassword[i]);
+	console.log("Encoded character with function " + encodish);
+}
+
+// var quotedPassword = "\"" + cheapo + "\"";
+// console.log(quotedPassword);
+
+console.log("Here are some stuff...")
+for (var i=0; i<quotedPassword.length; i++) {
+	console.log(quotedPassword.charCodeAt(i));
+}
+
+console.log("Here it is in Hex...")
+for (var i=0; i<quotedPassword.length; i++) {
+	console.log(quotedPassword.charCodeAt(i).toString(16));
+}
+
+console.log("Here it is in UTF16")
+for (var i=0; i<quotedPassword.length; i++) {
+	console.log(quotedPassword.charCodeAt(i).toString(16)+"00");
+}
+
+console.log("Here it is joined...")
+var bob = "";
+for (var i=0; i<quotedPassword.length; i++) {
+	bob += quotedPassword.charCodeAt(i).toString(16)+"00";
+}
+console.log(bob);
+
+var calvin = Array();
+for (var i=0; i<bob.length/6; i++) {
+	calvin[i] = bob.slice(i*6, i*6+6);
+}
+
+// for (var i=0; i<calvin.length; i++) {
+console.log( JSON.stringify(calvin));
+
+console.log("Pad the last one...");
+// Pad the last item to be six long...
+calvin[calvin.length - 1] = calvin[calvin.length - 1] + "000000"
+calvin[calvin.length - 1] = calvin[calvin.length - 1].slice(0, 6);
+console.log( JSON.stringify(calvin));
+
+
+console.log("Conver to binary");
+var jack = Array();
+
+for (var i=0; i<calvin.length; i++) {
+	console.log("Hobbes pass" + i);
+	var hobbes = calvin[i].split();
+	console.log("Hobbes is " + hobbes);
+	for (var j=0; j< hobbes.length; j++) {
+		console.log("Hobbes bit " + j);
+		var igor = parseInt(hobbes[j]).toString(2);	
+		// var igor = hobbes[j].toString(2);	
+		console.log("Igor is " + igor);
+	}
+}
+// for (var i=0; i<calvin.length; i++) {
+//	derrick[i] = calvin[i].toString(2);
+//	derrick[i] = int(calvin[i]).toString(2);
+// }
+console.log("I'm still listening...");
+console.log(JSON.stringify(derrick));
+
+
+// }
+
+for (var i=0; i<unicodePwd.length; i++) {
+	// pwdArray[i*2 + 1] = (byte) (unicodePwd[i] >>> 8);
+	pwdArray[i*2 + 1] = (unicodePwd[i] >>> 8);
+	// pwdArray[i*2 + 0] = (byte) (unicodePwd[i] & 0xff);
+	pwdArray[i*2 + 0] = (unicodePwd[i] & 0xff);
+}
+
+for (var i=0; i<pwdArray.length; i++) {
+	console.log(pwdArray[i]);
+}
+// ModificationItem[] mods = new ModificationItem[1];
+// mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE,
+// new BasicAttribute("UnicodePwd", pwdArray));
+// ldapContext.modifyAttributes("cn=" + username + baseName, mods); 
+}
+
+$( document ).ready( function() {
+console.log("ready");
+// alert('Huzzah!');
+main();
+// $(" button ").onClick = fetchAPIData;
+// makeChart();
+
+});
+</script>
+</html>
