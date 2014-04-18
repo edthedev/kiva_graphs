@@ -160,9 +160,9 @@ function list_loans( data, status) {
 
 		id = item['id'];
 
-
 		var item_html = [
-		'<li><button onClick="fetchAPIData(' + id + ');">',
+		'<li><canvas id=canvas' + id + '></canvas>',
+		'<button onClick="fetchAPIData(' + id + ');">',
 			'		Fetch Data for ' + id,
 			'</button></li>'
 		].join('\n');
@@ -173,7 +173,9 @@ function list_loans( data, status) {
 }
 
 function updateChart( data, status) {
-
+	
+	id = data['loans'][0]['id'];
+	console.log("ID is " + id);
 	due_amounts = getLoanSchedule(data);
 	paid_amounts = getLoanRepayments(data);
 	due_dates = getLoanDates(data);
@@ -186,11 +188,11 @@ function updateChart( data, status) {
 
 	console.log("HULK MAKE CHART!!");
 	//Get the context of the canvas element we want to select
-	var ctx = document.getElementById("myChart").getContext("2d");
+	// var ctx = document.getElementById("canvas" + id).getContext("2d");
 	// var myNewChart = new Chart(ctx).PolarArea(data);
 
 	//Get context with jQuery - using jQuery's .get() method.
-	var ctx = $("#myChart").get(0).getContext("2d");
+	var ctx = $("#canvas" + id).get(0).getContext("2d");
 	//This will get the first returned node in the jQuery collection.
 	var myNewChart = new Chart(ctx);
 
