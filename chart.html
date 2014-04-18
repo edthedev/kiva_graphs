@@ -46,13 +46,11 @@ TODO: Fetch all the records.
 </pre>
 
 
-<button onClick='fetchLoanList();'>
+		
+<button onClick="fetchLoanList();">
 	Fetch list of loans.
 </button>
 
-<button onClick='fetchAPIData();'>
-	Fetch API Data
-	</button>
 <div id='header'>
 
 <script>
@@ -159,9 +157,18 @@ function list_loans( data, status) {
 
 	$.each( loans, function( i, item ) {
 		// alert(item);
+
 		id = item['id'];
+
+
+		var item_html = [
+		'<li><button onClick="fetchAPIData(' + id + ');">',
+			'		Fetch Data for ' + id,
+			'</button></li>'
+		].join('\n');
+
 		console.log(id);
-		$( "#loans" ).append('<li>' + id + '</li>' );
+		$( "#loans" ).append(item_html);
 	});
 }
 
@@ -222,9 +229,9 @@ var data = {
 	};
 
 
-	function fetchAPIData() {
+	function fetchAPIData( loan_id ) {
 		// alert("called fetchAPIData");
-		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
+		var kivaAPI = 'http://api.kivaws.org/v1/loans/' + loan_id + '.json';
 
 		$.getJSON( kivaAPI ).done( updateChart );
 	};
