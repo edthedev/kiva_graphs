@@ -35,12 +35,21 @@ background-color: teal;
 
 <h1> Kiva stuff.</h1>
 
+
+
 <pre>
 Reminder: Ctrl+Option+K to open the Javascript console on Mac Firefox.
 Reminder: Command+Option+J to open the Javascript console on Mac Chrome.
 DONE: Do not fetch Kiva data on every page reload.
+TODO: Fetch all the records.
 
 </pre>
+
+
+<button onClick='fetchLoanList();'>
+	Fetch list of loans.
+</button>
+
 <button onClick='fetchAPIData();'>
 	Fetch API Data
 	</button>
@@ -94,6 +103,8 @@ console.log("console test");
 
 </script>
 
+<h3>Loans</h3>
+
 <h3>Charts</h3>
 <canvas id="myChart" width="400" height="400"></canvas>
 <label id="chartLabel" for="myChart"></label>
@@ -137,6 +148,16 @@ function getLoanRepayments(data) {
 			return e['amount'];}
 			);
 	return data
+}
+
+
+function list_loans( data, status) {
+   	console.log(JSON.stringify(data));
+
+	$.each( data.items, function( i, item ) {
+		alert(item);
+		$( "#header ul" ).append('<li>' + item + '</li>' );
+	});
 }
 
 function updateChart( data, status) {
@@ -185,9 +206,19 @@ var data = {
 	new Chart(ctx).Line(data);
 }
 
+
+
+	function fetchLoanList() {
+		// alert("called fetchLoanList");
+		var kivaAPI = 'http://api.kivaws.org/v1/';
+		var URL_loan_list = 'lenders/edandjoani/loans.json';
+		var URL_target = kivaAPI + URL_loan_list;
+		$.getJSON( URL_target ).done( list_loans );
+	};
+
+
 	function fetchAPIData() {
 		// alert("called fetchAPIData");
-		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		var kivaAPI = 'http://api.kivaws.org/v1/loans/575151.json';
 
 		$.getJSON( kivaAPI ).done( updateChart );
