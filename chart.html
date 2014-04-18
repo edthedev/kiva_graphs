@@ -116,7 +116,7 @@ function getLoanDates(data) {
 	payments = data['loans'][0]['terms']['local_payments']
 	// console.log(JSON.stringify(payments));
 	data = $.map(payments, function(e){
-			return e['due_date'];}
+			return e['due_date'].slice(0,7);}
 			);
 	return data
 			
