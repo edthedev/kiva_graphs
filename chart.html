@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <title>Kiva stuff.</title>
 <style type="text/css">
+
+li { background: lightblue; }
+li:nth-child(odd) { background: gray; }	
+
 img {
 height: 100px;
 float: left;
@@ -161,7 +165,7 @@ function list_loans( data, status) {
 		id = item['id'];
 
 		var item_html = [
-		'<li><canvas id=canvas' + id + '></canvas>',
+		'<li><div boder=1><canvas id=canvas' + id + ' width=400 height=100></canvas></div>',
 		'<button onClick="fetchAPIData(' + id + ');">',
 			'		Fetch Data for ' + id,
 			'</button></li>'
