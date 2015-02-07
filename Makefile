@@ -5,3 +5,6 @@ get_data:
 
 load_list:
 	curl_load_list.sh
+
+chart:
+	open chart.html
