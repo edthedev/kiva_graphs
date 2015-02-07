@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 <meta charset="utf-8">
-<title>Kiva stuff.</title>
+<title>Kiva Loan Repayment Chart Tool</title>
 <style type="text/css">
 
 li { background: lightblue; }
@@ -37,22 +37,30 @@ background-color: teal;
 </head>
 <body>
 
-<h1> Kiva stuff.</h1>
-
-
+<h1>Kiva Loan Repayment Chart Tool</h1>
+<p>This tool is a proof of concept, only. This tool is not warranted for any purpose whatsoever.</p>
+<p>While this tool can show a graphical representation of repayments paid, it currently does nothing to represent the original repayment schedule.</p>
+<p>Loans that show no repayments may simply not yet be scheduled for any repayments yet.</p>
 
 <pre>
-Reminder: Ctrl+Option+K to open the Javascript console on Mac Firefox.
+<!-- Reminder: Ctrl+Option+K to open the Javascript console on Mac Firefox.
 Reminder: Command+Option+J to open the Javascript console on Mac Chrome.
 DONE: Do not fetch Kiva data on every page reload.
 DONE: Fetch all the records.
-TODO: Figure out why some charts do not even have a repayment schedule. Seems like they all should...
-TODO: Add handling for additional pages of loans.
+? TODO: Figure out why some charts do not even have a repayment schedule. Seems like they all should...
+DONE: Add handling for additional pages of loans.
+TODO: Currently need to refresh the page before choosing a new page.
+--> 
 
 </pre>
 
-Enter Kiva User Name:
+<p>To start, enter a Kiva user name below, and choose a page of results. Then press 'Fetch list of loans'. For each loan fetched, you will then need to press the 'Fetch data for ...' button to display the graph and loan description.
+</p>
+
+Kiva User Name:
 <input id=username placeholder=edandjoani></input>
+Choose a page of results:
+<input id=page value=1></input>
 
 <button onClick="fetchLoanList();">
 	Fetch list of loans.
@@ -235,8 +243,9 @@ var data = {
 	function fetchLoanList() {
 		// alert("called fetchLoanList");
 		var username = $('#username').val();
+		var results_page = $('#page').val();
 		var kivaAPI = 'http://api.kivaws.org/v1/';
-		var URL_loan_list = 'lenders/' + username + '/loans.json';
+		var URL_loan_list = 'lenders/' + username + '/loans.json?page=' + results_page;
 		var URL_target = kivaAPI + URL_loan_list;
 		$.getJSON( URL_target ).done( list_loans );
 	};
