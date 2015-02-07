@@ -167,7 +167,8 @@ function list_loans( data, status) {
 		'<li><canvas id=canvas' + id + ' width=400 height=200></canvas>',
 		'<button onClick="fetchAPIData(' + id + ');">',
 			'		Fetch Data for ' + id,
-			'</button></li>'
+			'</button></li>',
+		'<p id=text' + id + '>Text goes here...</p>'
 		].join('\n');
 
 		console.log(id);
@@ -178,12 +179,13 @@ function list_loans( data, status) {
 function updateChart( data, status) {
 	
 	id = data['loans'][0]['id'];
+	var loan_text = data['loans'][0]['description']['texts']['en'];
 	console.log("ID is " + id);
 	due_amounts = getLoanSchedule(data);
 	paid_amounts = getLoanRepayments(data);
 	due_dates = getLoanDates(data);
 	desc = getLoanDescription(data);
-	console.log(desc);
+	// console.log(desc);
 
 	//
    	console.log(JSON.stringify(data));
@@ -198,6 +200,10 @@ function updateChart( data, status) {
 	var ctx = $("#canvas" + id).get(0).getContext("2d");
 	//This will get the first returned node in the jQuery collection.
 	var myNewChart = new Chart(ctx);
+
+	// update text
+	$('#text' + id).text("new dialog title");
+
 
 var data = {
 	labels : due_dates,
