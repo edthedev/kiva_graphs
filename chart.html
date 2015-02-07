@@ -53,6 +53,8 @@ TODO: Add handling for additional pages of loans.
 
 Enter Kiva User Name:
 <input id=username placeholder=edandjoani></input>
+Choose a page of results:
+<input id=page value=1></input>
 
 <button onClick="fetchLoanList();">
 	Fetch list of loans.
@@ -235,8 +237,9 @@ var data = {
 	function fetchLoanList() {
 		// alert("called fetchLoanList");
 		var username = $('#username').val();
+		var results_page = $('#page').val();
 		var kivaAPI = 'http://api.kivaws.org/v1/';
-		var URL_loan_list = 'lenders/' + username + '/loans.json';
+		var URL_loan_list = 'lenders/' + username + '/loans.json?page=' + results_page;
 		var URL_target = kivaAPI + URL_loan_list;
 		$.getJSON( URL_target ).done( list_loans );
 	};
