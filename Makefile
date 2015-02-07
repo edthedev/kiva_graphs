@@ -1,5 +1,5 @@
 chart:
-	open chart.html
+	open index.html
 
 edit:
-	vim chart.html Chart.js
+	vim index.html
