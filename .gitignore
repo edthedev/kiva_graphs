@@ -34,3 +34,13 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+
+# data artifacts
+.DS_Store
+.json
+data/
+images/
+other/
+rubbish/
+
